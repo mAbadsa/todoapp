@@ -7,6 +7,7 @@ const usersData = [
     lastName: 'Subhi',
     birthDay: '22-3-1989',
     avatarImage: 'https://via.placeholder.com/150',
+    password: "12345678",
   },
   {
     id: 2,
@@ -60,6 +61,31 @@ exports.createNewUser = (req, res) => {
     status: 200,
     message: 'User create successfully.',
     usersLength: usersData.length,
+  });
+};
+
+exports.userLogin = (req, res, next) => {
+  const { email, password } = req.body;
+  const user = usersData.find((_user) => _user.email === email);
+
+  if (!user) {
+    const err = new Error();
+    err.status = 404;
+    err.msg = 'User is not exists.';
+    next(err);
+  }
+
+  if (user.password !== password) {
+    const err = new Error();
+    err.status = 401;
+    err.msg = 'Passwords do not match.';
+    next(err);
+  }
+
+  res.status(200).json({
+    success: true,
+    status: 200,
+    message: 'User login successfully.',
   });
 };
 
