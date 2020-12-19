@@ -6,6 +6,8 @@ const morgan = require('morgan');
 
 require('dotenv').config({ path: './config.env' });
 
+const { todoRoutes } = require('./routers/index');
+
 const app = express();
 
 app.use(express.json());
@@ -29,4 +31,6 @@ app.get('/', (req, res) => {
   res.status(200).json({ success: true, status: 200, message: 'The server is running.' });
 });
 
-module.exports = { app };
+app.use('/api/v1', todoRoutes);
+
+module.exports = app;
