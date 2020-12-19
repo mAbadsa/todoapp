@@ -1,0 +1,35 @@
+{
+  "name": "todoapp",
+  "version": "1.0.0",
+  "description": "nTask is a simple to use to-do list app that can help you plan, track, and get more tasks done.",
+  "main": "index.js",
+  "scripts": {
+    "test": "ENV_NODE=test jest",
+    "start": "ENV_NODE=production node src/index.js",
+    "dev": "NODE_ENV=development nodemon src/index.js"
+  },
+  "repository": "git+https://github.com/mAbadsa/todoapp.git",
+  "author": "\"Muhammad Alabadsa\"",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mAbadsa/todoapp/issues"
+  },
+  "homepage": "https://github.com/mAbadsa/todoapp#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.5.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.6",
+    "supertest": "^6.0.1"
+  }
+}
