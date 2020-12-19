@@ -51,7 +51,8 @@ exports.runValidator = (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    next(httpErrors(errors.array()[0].msg, 422));
+    const { msg } = errors.array()[0];
+    next(httpErrors(msg, 422));
   }
   next();
 };
