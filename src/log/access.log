@@ -365,3 +365,7 @@
 ::ffff:127.0.0.1 - - [19/Dec/2020:17:28:24 +0000] "POST /api/v1/users HTTP/1.1" 201 83 "-" "-"
 ::ffff:127.0.0.1 - - [19/Dec/2020:17:28:24 +0000] "PATCH /api/v1/users/1 HTTP/1.1" 200 269 "-" "-"
 ::ffff:127.0.0.1 - - [19/Dec/2020:17:28:24 +0000] "DELETE /api/v1/users/2 HTTP/1.1" 200 398 "-" "-"
+::1 - - [19/Dec/2020:17:43:08 +0000] "POST /api/v1/users HTTP/1.1" 422 689 "-" "PostmanRuntime/7.26.8"
+::1 - - [19/Dec/2020:17:43:22 +0000] "POST /api/v1/users/login HTTP/1.1" 404 1027 "-" "PostmanRuntime/7.26.8"
+::1 - - [19/Dec/2020:17:43:34 +0000] "POST /api/v1/users/login HTTP/1.1" 404 1027 "-" "PostmanRuntime/7.26.8"
+::1 - - [19/Dec/2020:17:44:13 +0000] "POST /api/v1/users/login HTTP/1.1" 200 66 "-" "PostmanRuntime/7.26.8"

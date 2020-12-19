@@ -3,7 +3,7 @@ const {
 } = require('./todo');
 
 const {
-  getUserById, createNewUser, updateUserById, deleteUserById,
+  getUserById, createNewUser, userLogin, updateUserById, deleteUserById,
 } = require('./user');
 
 module.exports = {
@@ -14,6 +14,7 @@ module.exports = {
   deleteTodoById,
   getUserById,
   createNewUser,
+  userLogin,
   updateUserById,
   deleteUserById,
 };
