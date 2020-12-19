@@ -127,6 +127,8 @@ describe('User routes test', () => {
         lastName: 'Alahmed',
         birthDay: '12-12-2020',
         avtarImage: 'https://via.placeholder.com/150',
+        password: '12345678',
+        confirmPassword: '12345678'
       })
       .end((err, res) => {
         if (err) return done(err);
