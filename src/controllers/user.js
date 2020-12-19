@@ -1,3 +1,5 @@
+const { httpErrors } = require('../utils/httpErrors');
+
 const usersData = [
   {
     id: 1,
@@ -7,7 +9,7 @@ const usersData = [
     lastName: 'Subhi',
     birthDay: '22-3-1989',
     avatarImage: 'https://via.placeholder.com/150',
-    password: "12345678",
+    password: '12345678',
   },
   {
     id: 2,
@@ -17,6 +19,7 @@ const usersData = [
     lastName: 'ALAli',
     birthDay: '22-3-1990',
     avatarImage: 'https://via.placeholder.com/150',
+    password: '12345678',
   },
 ];
 
@@ -69,17 +72,11 @@ exports.userLogin = (req, res, next) => {
   const user = usersData.find((_user) => _user.email === email);
 
   if (!user) {
-    const err = new Error();
-    err.status = 404;
-    err.msg = 'User is not exists.';
-    next(err);
+    next(httpErrors('User is not exists.', 404));
   }
 
   if (user.password !== password) {
-    const err = new Error();
-    err.status = 401;
-    err.msg = 'Passwords do not match.';
-    next(err);
+    next(httpErrors('Passwords do not match.', 400));
   }
 
   res.status(200).json({
