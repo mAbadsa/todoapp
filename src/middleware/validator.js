@@ -1,5 +1,7 @@
 const { check, validationResult } = require('express-validator');
 
+const { httpErrors } = require('../utils/httpErrors');
+
 exports.todoValidator = [
   check('todoContent')
     .trim()
@@ -49,11 +51,7 @@ exports.runValidator = (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    console.log(errors);
-    const err = new Error();
-    err.msg = errors.array()[0].msg;
-    err.statusCode = 422;
-    next(err);
+    next(httpErrors(errors.array()[0].msg, 422));
   }
   next();
 };
