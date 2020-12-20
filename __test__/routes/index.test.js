@@ -125,7 +125,7 @@ describe('User routes test', () => {
         email: 'test_3@test.com',
         firstName: 'Ahmed',
         lastName: 'Alahmed',
-        birthDay: '12-12-2020',
+        age: '20',
         avtarImage: 'https://via.placeholder.com/150',
         password: '12345678',
         confirmPassword: '12345678',
