@@ -23,3 +23,5 @@ exports.getUserInfo = (userId) => {
   };
   return connection.query(sql);
 };
+
+exports.getAllUser = () => connection.query('SELECT * FROM users');
