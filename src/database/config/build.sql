@@ -17,7 +17,7 @@ CREATE TABLE users (
 
 CREATE TABLE todos (
     todo_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID REFERENCES users(user_id),
+    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
     todo_content TEXT NOT NULL,
     completed BOOLEAN DEFAULT false,
     importance_level SMALLINT,
