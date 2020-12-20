@@ -5,6 +5,7 @@ const {
   getAllTodosByUserId, getUserInfo, getSingleTodoByTodoId, getAllUser,
 } = require('../../src/database/queries/getData');
 const { addUser, addTodo } = require('../../src/database/queries/addData');
+const { updateTodo, updateUser } = require('../../src/database/queries/updateData');
 
 beforeAll(() => runBuild());
 
@@ -39,11 +40,25 @@ describe('Datebase Create Data test', () => {
   });
 
   test('Create New Todo Test', async () => {
-    const res = await addTodo({
+    const { rowCount } = await addTodo({
       userId: '5c253f3d-d715-4836-82bf-c073374189dd', todoContent: 'Go to market', importanceLevel: 2, taskType: 'House',
     });
-    console.log(res);
-    expect(res.rowCount).toBe(1);
+    expect(rowCount).toBe(1);
+  });
+
+  test('Update Todo Test', async () => {
+    const { rowCount } = await updateTodo({
+      userId: '5c253f3d-d715-4836-82bf-c073374189dd', todoId: '9c271a2d-beab-41d1-a5ea-b3ea06912742', todoContent: 'Make tea', importanceLevel: 3, taskType: 'House',
+    });
+    expect(rowCount).toBe(1);
+  });
+
+  test('Update user Test', async () => {
+    const { rowCount, rows } = await updateUser({
+      userId: 'b3ea641e-1281-435c-8af7-059386395338', firstName: 'Ahmed', lastName: 'ALahmed', age: 18,
+    });
+    console.log(rows);
+    expect(rowCount).toBe(1);
   });
 });
 
