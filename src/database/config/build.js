@@ -8,9 +8,8 @@ const runBuild = () => {
   if (process.env.NODE_ENV !== 'production') {
     const testItem = readFileSync(join(__dirname, './fakeData.sql')).toString();
     sql += testItem;
-    console.log(`${sql}`);
   }
   return connection.query(sql);
 };
 
-runBuild();
+module.exports = { runBuild };
