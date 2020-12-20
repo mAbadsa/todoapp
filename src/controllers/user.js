@@ -7,7 +7,7 @@ const usersData = [
     email: 'test_1@test.com',
     firstName: 'Muhammad',
     lastName: 'Subhi',
-    birthDay: '22-3-1989',
+    age: '22',
     avatarImage: 'https://via.placeholder.com/150',
     password: '12345678',
   },
@@ -17,7 +17,7 @@ const usersData = [
     email: 'test_2@test.com',
     firstName: 'Ali',
     lastName: 'ALAli',
-    birthDay: '22-3-1990',
+    age: '18',
     avatarImage: 'https://via.placeholder.com/150',
     password: '12345678',
   },
@@ -45,7 +45,7 @@ exports.createNewUser = (req, res) => {
     email,
     firstName,
     lastName,
-    birthDay,
+    age,
     avatarImage,
   } = req.body;
 
@@ -55,7 +55,7 @@ exports.createNewUser = (req, res) => {
     email,
     firstName,
     lastName,
-    birthDay,
+    age,
     avatarImage,
   });
 
@@ -88,7 +88,7 @@ exports.userLogin = (req, res, next) => {
 
 exports.updateUserById = (req, res) => {
   const {
-    username, firstName, lastName, birthDay, avatarImage,
+    username, firstName, lastName, age, avatarImage,
   } = req.body;
   const { userId } = req.params;
 
@@ -100,7 +100,7 @@ exports.updateUserById = (req, res) => {
     username: username || user.username,
     firstName: firstName || user.firstName,
     lastName: lastName || user.lastName,
-    birthDay: birthDay || user.birthDay,
+    age: age || user.age,
     avatarImage: avatarImage || user.avatarImage,
   };
 
