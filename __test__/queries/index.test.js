@@ -40,7 +40,7 @@ describe('Datebase Create Data test', () => {
 
   test('Create New Todo Test', async () => {
     const res = await addTodo({
-      userId: '5c253f3d-d715-4836-82bf-c073374189dd', todoContent: 'Go to market', ImportanceLevel: 2, taskType: 'House',
+      userId: '5c253f3d-d715-4836-82bf-c073374189dd', todoContent: 'Go to market', importanceLevel: 2, taskType: 'House',
     });
     console.log(res);
     expect(res.rowCount).toBe(1);
