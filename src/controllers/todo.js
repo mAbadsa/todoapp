@@ -1,3 +1,5 @@
+const { getTodos, getTodo } = require('../database/queries/index');
+
 const testingData = [
   {
     userId: 1,
@@ -17,25 +19,35 @@ const testingData = [
   },
 ];
 
-exports.getAllTodosByUserId = (req, res) => {
-  res.status(200).json({
-    success: true,
-    status: 200,
-    message: 'get Todo successfully.',
-    todos: testingData,
-  });
+const userId = '5c253f3d-d715-4836-82bf-c073374189dd';
+
+exports.getAllTodosByUserId = async (req, res, next) => {
+  try {
+    const { rows } = await getTodos(userId);
+    return res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'get Todo successfully.',
+      todos: rows,
+    });
+  } catch (error) {
+    return next(error);
+  }
 };
 
-exports.getTodosByTodoId = (req, res) => {
+exports.getTodosByTodoId = async (req, res, next) => {
   const { todoId } = req.params;
-  const todo = testingData.find((t) => t.id === +todoId);
-
-  res.status(200).json({
-    success: true,
-    status: 200,
-    message: 'get Todo successfully.',
-    todo,
-  });
+  try {
+    const { rows } = await getTodo(userId, todoId);
+    return res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'get Todo successfully.',
+      todo: rows,
+    });
+  } catch (error) {
+    return next(error);
+  }
 };
 
 exports.createTodo = (req, res) => {

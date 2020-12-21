@@ -1,6 +1,6 @@
 const connection = require('../config/connection');
 
-exports.getAllTodosByUserId = (userId) => {
+exports.getTodos = (userId) => {
   const sql = {
     text: 'SELECT * FROM todos WHERE user_id = $1',
     values: [userId],
@@ -8,7 +8,7 @@ exports.getAllTodosByUserId = (userId) => {
   return connection.query(sql);
 };
 
-exports.getSingleTodoByTodoId = (userId, todoId) => {
+exports.getTodo = (userId, todoId) => {
   const sql = {
     text: 'SELECT * FROM todos WHERE user_id = $1 AND todo_id = $2',
     values: [userId, todoId],

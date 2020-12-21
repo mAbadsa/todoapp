@@ -6,7 +6,7 @@
   "scripts": {
     "test": "ENV_NODE=test jest",
     "start": "ENV_NODE=production node src/index.js",
-    "dev": "NODE_ENV=development nodemon src/index.js"
+    "dev": "NODE_ENV=test nodemon src/index.js"
   },
   "repository": "git+https://github.com/mAbadsa/todoapp.git",
   "author": "\"Muhammad Alabadsa\"",

@@ -3,11 +3,11 @@ node_js: lts/*
 services:
   - postgresql
 before_script:
-  - psql -c "create database todo_test_db;" -U postgres
+  - psql -c "create database todo_db_test;" -U postgres
   - psql -c "create user muhammad with password '123456';" -U postgres
 env: 
   global:
   - PGPORT=5432
 test:
   adapter: postgresql
-  database: todo_test_db
+  database: todo_db_test
