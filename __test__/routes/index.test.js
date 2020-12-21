@@ -11,6 +11,7 @@ describe('Todo routes test', () => {
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) return done(err);
+        console.log(res.body);
         expect(res.body.todos.length).toBe(2);
         return done();
       });
@@ -23,6 +24,7 @@ describe('Todo routes test', () => {
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) return done(err);
+        console.log(res.body);
         expect(res.body.todo.length).toBe(1);
         expect(res.body.todo[0].todo_id).toBe('5301ea70-1d57-4b70-8c46-4b9657551978');
         return done();
@@ -85,6 +87,7 @@ describe('User routes test', () => {
         .expect(200)
         .expect('Content-Type', /json/);
       expect(res.body.user.username).toBe('muh123');
+      console.log(res.body);
       return done();
     } catch (error) {
       return done(error);

@@ -40,7 +40,7 @@ exports.getUserById = async (req, res, next) => {
       },
     });
   } catch (error) {
-    return next(httpErrors(error));
+    return next(error);
   }
 };
 

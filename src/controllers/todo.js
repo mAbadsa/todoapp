@@ -1,4 +1,3 @@
-const { httpErrors } = require('../utils/httpErrors');
 const { getTodos, getTodo } = require('../database/queries/index');
 
 const testingData = [
@@ -32,7 +31,7 @@ exports.getAllTodosByUserId = async (req, res, next) => {
       todos: rows,
     });
   } catch (error) {
-    return next(httpErrors(error));
+    return next(error);
   }
 };
 
@@ -47,7 +46,7 @@ exports.getTodosByTodoId = async (req, res, next) => {
       todo: rows,
     });
   } catch (error) {
-    return next(httpErrors(error));
+    return next(error);
   }
 };
 
