@@ -2,7 +2,10 @@
 const request = require('supertest');
 
 const app = require('../../src/app');
+const { runBuild } = require('../../src/database/config/build.js');
+const connection = require('../../src/database/config/connection');
 
+beforeAll(() => runBuild());
 describe('Todo routes test', () => {
   test('Get all todos for specific user should be return 2', (done) => {
     request(app)
@@ -142,3 +145,5 @@ describe('User routes test', () => {
   //     });
   // });
 });
+
+afterAll(() => connection.end());

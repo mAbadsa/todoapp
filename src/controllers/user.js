@@ -24,10 +24,10 @@ const usersData = [
   },
 ];
 
-const userId = '5c253f3d-d715-4836-82bf-c073374189dd';
+// const userId = '5c253f3d-d715-4836-82bf-c073374189dd';
 
 exports.getUserById = async (req, res, next) => {
-  // const { userId } = req.params;
+  const { userId } = req.params;
   try {
     const { rows } = await getUserInfo(userId);
     return res.status(200).json({
