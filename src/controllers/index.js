@@ -1,5 +1,5 @@
 const {
-  getAllTodosByUserId, getTodosByTodoId, createTodo, updateTodoById, deleteTodoById,
+  getAllTodosByUserId, getTodoByTodoId, createTodo, updateTodoById, deleteTodoById,
 } = require('./todo');
 
 const {
@@ -8,7 +8,7 @@ const {
 
 module.exports = {
   getAllTodosByUserId,
-  getTodosByTodoId,
+  getTodoByTodoId,
   createTodo,
   updateTodoById,
   deleteTodoById,

@@ -42,9 +42,7 @@ exports.signinValidator = [
 ];
 
 exports.updateUserValidator = [
-  check('username').not().isEmpty().trim()
-    .isLength({ min: 2 })
-    .withMessage('Userame must be at least 2 character long.'),
+  check('age').trim().isInt().withMessage('Age must be at integer number.'),
 ];
 
 exports.runValidator = (req, res, next) => {
