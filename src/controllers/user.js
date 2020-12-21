@@ -1,4 +1,5 @@
 const { httpErrors } = require('../utils/httpErrors');
+const { getUserInfo } = require('../database/queries/index');
 
 const usersData = [
   {
@@ -23,19 +24,24 @@ const usersData = [
   },
 ];
 
-exports.getUserById = (req, res) => {
-  const { userId } = req.params;
-  const user = usersData.find((_user) => _user.id === +userId);
+const userId = '5c253f3d-d715-4836-82bf-c073374189dd';
 
-  res.status(200).json({
-    success: true,
-    status: 200,
-    message: 'Get user successfully',
-    user: {
-      ...user,
-      password: '',
-    },
-  });
+exports.getUserById = async (req, res, next) => {
+  // const { userId } = req.params;
+  try {
+    const { rows } = await getUserInfo(userId);
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'Get user successfully',
+      user: {
+        ...rows[0],
+        password: '',
+      },
+    });
+  } catch (error) {
+    next(httpErrors(error));
+  }
 };
 
 exports.createNewUser = (req, res) => {
@@ -90,10 +96,9 @@ exports.updateUserById = (req, res) => {
   const {
     username, firstName, lastName, age, avatarImage,
   } = req.body;
-  const { userId } = req.params;
 
-  const user = usersData.find((_user) => _user.id === +userId);
-  const userIndex = usersData.findIndex((_user) => _user.id === +userId);
+  const user = usersData.find((_user) => _user.id === userId);
+  const userIndex = usersData.findIndex((_user) => _user.id === userId);
 
   const updatedUser = {
     ...user,
@@ -118,8 +123,7 @@ exports.updateUserById = (req, res) => {
 };
 
 exports.deleteUserById = (req, res) => {
-  const { userId } = req.params;
-  const userIndex = usersData.findIndex((_user) => _user.id === +userId);
+  const userIndex = usersData.findIndex((_user) => _user.id === userId);
 
   usersData.splice(userIndex, 1);
 
