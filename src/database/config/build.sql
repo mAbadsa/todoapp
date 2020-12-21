@@ -11,6 +11,7 @@ CREATE TABLE users (
     last_name VARCHAR(100),
     age SMALLINT,
     password TEXT NOT NULL,
+    avatar_image TEXT DEFAULT 'https://via.placeholder.com/150',
     created_on TIMESTAMP NOT NULL,
     last_update TIMESTAMP NOT NULL
 );

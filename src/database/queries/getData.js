@@ -18,7 +18,7 @@ exports.getTodo = (userId, todoId) => {
 
 exports.getUserInfo = (userId) => {
   const sql = {
-    text: 'SELECT * FROM users WHERE user_id = $1',
+    text: 'SELECT * FROM users WHERE user_id = $1;',
     values: [userId],
   };
   return connection.query(sql);

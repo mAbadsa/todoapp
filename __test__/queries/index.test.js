@@ -83,6 +83,7 @@ describe('Database Update Data test', () => {
       firstName: 'Ahmed',
       lastName: 'ALahmed',
       age: 18,
+      avatarImage: 'https://via.placeholder.com/150',
     });
     expect(rowCount).toBe(1);
   });

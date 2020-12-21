@@ -1,5 +1,5 @@
 const { httpErrors } = require('../utils/httpErrors');
-const { getUserInfo } = require('../database/queries/index');
+const { getUserInfo, updateUser } = require('../database/queries/index');
 
 const usersData = [
   {
@@ -92,37 +92,58 @@ exports.userLogin = (req, res, next) => {
   });
 };
 
-exports.updateUserById = (req, res) => {
+exports.updateUserById = async (req, res, next) => {
+  const { userId } = req.params;
   const {
-    username, firstName, lastName, age, avatarImage,
+    firstName, lastName, age, avatarImage,
   } = req.body;
 
-  const user = usersData.find((_user) => _user.id === userId);
-  const userIndex = usersData.findIndex((_user) => _user.id === userId);
+  try {
+    const { rowCount, rows } = await getUserInfo(userId);
+    if (rowCount === 0) {
+      return next(httpErrors('User does not exist', 400));
+    }
+    const { rowCount: _rowCount, rows: _rows } = await updateUser({
+      userId,
+      firstName: firstName || rows[0].first_name,
+      lastName: lastName || rows[0].last_name,
+      age: age || rows[0].age,
+      avatarImage: avatarImage || rows[0].avatar_iamge,
+    });
 
-  const updatedUser = {
-    ...user,
-    username: username || user.username,
-    firstName: firstName || user.firstName,
-    lastName: lastName || user.lastName,
-    age: age || user.age,
-    avatarImage: avatarImage || user.avatarImage,
-  };
+    return res.status(200).json({
+      success: true,
+      status: 200,
+      messgae: 'User has been successfully updated',
+      user: {
+        ..._rows[0],
+        password: '',
+      },
+      rowCount: _rowCount,
+    });
+  } catch (error) {
+    console.log('IN ERROR::');
+    return next(error);
+  }
 
-  usersData.splice(userIndex, 1, updatedUser);
+  // const user = usersData.find((_user) => _user.id === userId);
+  // const userIndex = usersData.findIndex((_user) => _user.id === userId);
 
-  res.status(200).json({
-    success: true,
-    status: 200,
-    messgae: 'User has been successfully updated',
-    user: {
-      ...updatedUser,
-      password: '',
-    },
-  });
+  // const updatedUser = {
+  //   ...user,
+  //   username: username || user.username,
+  //   firstName: firstName || user.firstName,
+  //   lastName: lastName || user.lastName,
+  //   age: age || user.age,
+  //   avatarImage: avatarImage || user.avatarImage,
+  // };
+
+  // usersData.splice(userIndex, 1, updatedUser);
 };
 
 exports.deleteUserById = (req, res) => {
+  const { userId } = req.params;
+
   const userIndex = usersData.findIndex((_user) => _user.id === userId);
 
   usersData.splice(userIndex, 1);
