@@ -30,7 +30,7 @@ exports.getUserById = async (req, res, next) => {
   // const { userId } = req.params;
   try {
     const { rows } = await getUserInfo(userId);
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       status: 200,
       message: 'Get user successfully',
@@ -40,7 +40,7 @@ exports.getUserById = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(httpErrors(error));
+    return next(httpErrors(error));
   }
 };
 
