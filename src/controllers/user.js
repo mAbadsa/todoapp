@@ -1,5 +1,11 @@
+const bcrypt = require('bcrypt');
 const { httpErrors } = require('../utils/httpErrors');
-const { getUserInfo, updateUser } = require('../database/queries/index');
+const {
+  getUserInfo,
+  updateUser,
+  getUser,
+  addUser,
+} = require('../database/queries/index');
 
 const usersData = [
   {
@@ -44,33 +50,42 @@ exports.getUserById = async (req, res, next) => {
   }
 };
 
-exports.createNewUser = (req, res) => {
+exports.createNewUser = async (req, res, next) => {
   const {
-    id,
     username,
     email,
-    firstName,
-    lastName,
-    age,
-    avatarImage,
+    password,
+
   } = req.body;
 
-  usersData.push({
-    id,
-    username,
-    email,
-    firstName,
-    lastName,
-    age,
-    avatarImage,
-  });
+  try {
+    const { rows } = await getUser(email, username);
+    if (rows.length > 0) {
+      throw httpErrors('User already exists.', 409);
+    }
 
-  res.status(201).json({
-    success: true,
-    status: 200,
-    message: 'User create successfully.',
-    usersLength: usersData.length,
-  });
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    const { rowCount: _rowCount, rows: _rows } = await addUser({
+      ...req.body,
+      password: hashPassword,
+    });
+
+    console.log(_rows);
+
+    return res.status(201).json({
+      success: true,
+      status: 200,
+      message: 'User create successfully.',
+      user: {
+        ..._rows[0],
+        password: '',
+      },
+      rowCount: _rowCount,
+    });
+  } catch (error) {
+    return next(error);
+  }
 };
 
 exports.userLogin = (req, res, next) => {

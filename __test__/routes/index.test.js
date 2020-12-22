@@ -99,27 +99,25 @@ describe('User routes test', () => {
     }
   });
 
-  test('Should be return usersLength = 3', (done) => {
-    request(app)
-      .post('/api/v1/users')
-      .expect(201)
-      .expect('Content-Type', /json/)
-      .send({
-        id: 3,
-        username: 'ahmed',
-        email: 'test_3@test.com',
-        firstName: 'Ahmed',
-        lastName: 'Alahmed',
-        age: '20',
-        avtarImage: 'https://via.placeholder.com/150',
-        password: '12345678',
-        confirmPassword: '12345678',
-      })
-      .end((err, res) => {
-        if (err) return done(err);
-        expect(res.body.usersLength).toBe(3);
-        return done();
-      });
+  test('Should be return username = ibrahim05', async (done) => {
+    try {
+      const res = await request(app)
+        .post('/api/v1/users')
+        .expect(201)
+        .expect('Content-Type', /json/)
+        .send({
+          username: 'ibrahim05',
+          email: 'ibrahim@test.com',
+          firstName: 'Ibrahim',
+          lastName: 'AlIbrahim',
+          password: '12345678asd',
+          confirmPassword: '12345678asd',
+        });
+      expect(res.body.user.username).toBe('ibrahim05');
+      return done();
+    } catch (error) {
+      return done(err);
+    }
   });
 
   test('Should be return 30', async (done) => {
