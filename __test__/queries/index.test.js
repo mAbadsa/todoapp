@@ -92,6 +92,7 @@ describe('Database Update Data test', () => {
 describe('Database Delete Data test', () => {
   test('Delete Todo Test', async () => {
     const { rowCount } = await deleteTodo(
+      '5c253f3d-d715-4836-82bf-c073374189dd',
       '9c271a2d-beab-41d1-a5ea-b3ea06912742',
     );
     expect(rowCount).toBe(1);

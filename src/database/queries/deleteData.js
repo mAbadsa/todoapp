@@ -1,9 +1,9 @@
 const connection = require('../config/connection');
 
-exports.deleteTodo = (todoId) => {
+exports.deleteTodo = (userId, todoId) => {
   const sql = {
-    text: 'DELETE FROM todos WHERE todo_id = $1;',
-    values: [todoId],
+    text: 'DELETE FROM todos WHERE user_id = $1 AND todo_id = $2;',
+    values: [userId, todoId],
   };
   return connection.query(sql);
 };
