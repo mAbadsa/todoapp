@@ -1,26 +1,11 @@
 const {
-  getTodos, getTodo, addTodo, updateTodo,
+  getTodos,
+  getTodo,
+  addTodo,
+  updateTodo,
+  deleteTodo,
 } = require('../database/queries/index');
 const { httpErrors } = require('../utils/httpErrors');
-
-const testingData = [
-  {
-    userId: 1,
-    id: 1,
-    todo_content: 'task-one',
-    ImportanceLevel: 1,
-    taskType: 'house',
-    createdAt: '10-12-2020',
-  },
-  {
-    userId: 1,
-    id: 2,
-    todo_content: 'task-two',
-    ImportanceLevel: 3,
-    taskType: 'office',
-    createdAt: '10-12-2020',
-  },
-];
 
 const userId = '5c253f3d-d715-4836-82bf-c073374189dd';
 
@@ -57,7 +42,10 @@ exports.createTodo = async (req, res, next) => {
   const { todoContent, importanceLevel, taskType } = req.body;
   try {
     const { rowCount, rows } = await addTodo({
-      userId, todoContent, importanceLevel, taskType,
+      userId,
+      todoContent,
+      importanceLevel,
+      taskType,
     });
     return res.status(201).json({
       success: true,
@@ -100,14 +88,22 @@ exports.updateTodoById = async (req, res, next) => {
   }
 };
 
-exports.deleteTodoById = (req, res) => {
+exports.deleteTodoById = async (req, res, next) => {
   const { todoId } = req.params;
-  const todos = testingData.filter((todo) => todo.id !== +todoId);
+  try {
+    const { rowCount } = await deleteTodo(userId, todoId);
 
-  res.status(200).json({
-    success: true,
-    status: 200,
-    message: 'Todo Deleted.',
-    todos,
-  });
+    if (rowCount === 0) {
+      throw httpErrors('Todo not found.', 404);
+    }
+
+    return res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'Todo Deleted.',
+      rowCount,
+    });
+  } catch (error) {
+    return next(error);
+  }
 };

@@ -5,6 +5,7 @@ const {
   updateUser,
   getUser,
   addUser,
+  deleteUser,
 } = require('../database/queries/index');
 
 const usersData = [
@@ -70,8 +71,6 @@ exports.createNewUser = async (req, res, next) => {
       ...req.body,
       password: hashPassword,
     });
-
-    console.log(_rows);
 
     return res.status(201).json({
       success: true,
@@ -156,18 +155,23 @@ exports.updateUserById = async (req, res, next) => {
   // usersData.splice(userIndex, 1, updatedUser);
 };
 
-exports.deleteUserById = (req, res) => {
+exports.deleteUserById = async (req, res, next) => {
   const { userId } = req.params;
 
-  const userIndex = usersData.findIndex((_user) => _user.id === userId);
+  try {
+    const { rowCount } = await deleteUser(userId);
 
-  usersData.splice(userIndex, 1);
+    if (rowCount === 0) {
+      throw httpErrors('User not found;', 404);
+    }
 
-  res.status(200).json({
-    success: true,
-    status: 200,
-    message: 'User has been successfully deleted.',
-    usersLength: usersData.length,
-    usersData,
-  });
+    return res.status(200).json({
+      success: true,
+      status: 200,
+      message: 'User has been successfully deleted.',
+      rowCount,
+    });
+  } catch (error) {
+    return next(error);
+  }
 };

@@ -27,7 +27,9 @@ describe('Todo routes test', () => {
         .expect(200)
         .expect('Content-Type', /json/);
       expect(res.body.todo.length).toBe(1);
-      expect(res.body.todo[0].todo_id).toBe('5301ea70-1d57-4b70-8c46-4b9657551978');
+      expect(res.body.todo[0].todo_id).toBe(
+        '5301ea70-1d57-4b70-8c46-4b9657551978',
+      );
       return done();
     } catch (error) {
       return done(err);
@@ -72,16 +74,17 @@ describe('Todo routes test', () => {
     }
   });
 
-  test('Dlete specific todo Should be return 1', (done) => {
-    request(app)
-      .delete('/api/v1/todos/1')
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .end((err, res) => {
-        if (err) return done(err);
-        expect(res.body.todos.length).toBe(1);
-        return done();
-      });
+  test('Delete specific todo Should be return rowCount = 1', async (done) => {
+    try {
+      const res = await request(app)
+        .delete('/api/v1/todos/5301ea70-1d57-4b70-8c46-4b9657551978')
+        .expect(200)
+        .expect('Content-Type', /json/);
+      expect(res.body.rowCount).toBe(1);
+      return done();
+    } catch (error) {
+      return done(error);
+    }
   });
 });
 
@@ -134,17 +137,19 @@ describe('User routes test', () => {
     }
   });
 
-  // test('Should be return usersLength = 1', (done) => {
-  //   request(app)
-  //     .delete('/api/v1/users/2')
-  //     .expect(200)
-  //     .expect('Content-Type', /json/)
-  //     .end((err, res) => {
-  //       if (err) return done(err);
-  //       expect(res.body.usersLength).toBe(2);
-  //       return done();
-  //     });
-  // });
+  test('Should be return rowCount = 1', async (done) => {
+    try {
+      const res = await request(app)
+        .delete('/api/v1/users/b3ea641e-1281-435c-8af7-059386395338')
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(res.body.rowCount).toBe(1);
+      return done();
+    } catch (error) {
+      return done(error);
+    }
+  });
 });
 
 afterAll(() => connection.end());
