@@ -1,5 +1,5 @@
 const {
-  getTodo, getTodos, getAllUser, getUserInfo,
+  getTodo, getTodos, getAllUser, getUserInfo, getUser,
 } = require('./getData');
 const {
   addTodo, addUser,
@@ -12,6 +12,7 @@ module.exports = {
   getTodos,
   getAllUser,
   getUserInfo,
+  getUser,
   addTodo,
   addUser,
   updateTodo,

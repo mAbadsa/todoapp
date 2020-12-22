@@ -4,7 +4,7 @@ exports.addUser = ({
   username, email, password, firstName, lastName, age,
 }) => {
   const sql = {
-    text: 'INSERT INTO users (username, email, password, first_name, last_name, age, created_on, last_update) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);',
+    text: 'INSERT INTO users (username, email, password, first_name, last_name, age, created_on, last_update) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING *;',
     values: [username, email, password, firstName, lastName, age],
   };
   return connection.query(sql);
