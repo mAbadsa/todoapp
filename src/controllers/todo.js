@@ -42,7 +42,7 @@ exports.createTodo = async (req, res, next) => {
   const { todoContent, importanceLevel, taskType } = req.body;
   try {
     const { rowCount, rows } = await addTodo({
-      userId,
+      userId: req.user.user_id,
       todoContent,
       importanceLevel,
       taskType,

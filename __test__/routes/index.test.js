@@ -6,6 +6,23 @@ const { runBuild } = require('../../src/database/config/build.js');
 const connection = require('../../src/database/config/connection');
 
 beforeAll(() => runBuild());
+let token;
+beforeAll(async (done) => {
+  try {
+    const res = await request(app)
+      .post('/api/v1/users/login')
+      .send({
+        email: 'muhammad@test.com',
+        password: '123456asd',
+      });
+    // eslint-disable-next-line no-unused-vars
+    token = res.body.token; // save the token!
+    return done();
+  } catch (error) {
+    return done(err);
+  }
+});
+
 describe('Todo routes test', () => {
   test('Get all todos for specific user should be return 2', async (done) => {
     try {
@@ -43,11 +60,11 @@ describe('Todo routes test', () => {
         .expect(201)
         .expect('Content-Type', /json/)
         .send({
-          userId: 1,
           todoContent: 'new task',
           importanceLevel: 1,
           taskType: 'house',
-        });
+        })
+        .set('Cookie', [`token=${token}`]);
       expect(res.body.todo.todo_content).toEqual('new task');
       expect(res.body.rowCount).toBe(1);
       return done();
