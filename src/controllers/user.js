@@ -1,4 +1,7 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config({ path: './config.env' });
+
 const { httpErrors } = require('../utils/httpErrors');
 const {
   getUserInfo,
@@ -7,29 +10,6 @@ const {
   addUser,
   deleteUser,
 } = require('../database/queries/index');
-
-const usersData = [
-  {
-    id: 1,
-    username: 'muhammad',
-    email: 'test_1@test.com',
-    firstName: 'Muhammad',
-    lastName: 'Subhi',
-    age: '22',
-    avatarImage: 'https://via.placeholder.com/150',
-    password: '12345678',
-  },
-  {
-    id: 2,
-    username: 'ali20',
-    email: 'test_2@test.com',
-    firstName: 'Ali',
-    lastName: 'ALAli',
-    age: '18',
-    avatarImage: 'https://via.placeholder.com/150',
-    password: '12345678',
-  },
-];
 
 // const userId = '5c253f3d-d715-4836-82bf-c073374189dd';
 
@@ -52,12 +32,7 @@ exports.getUserById = async (req, res, next) => {
 };
 
 exports.createNewUser = async (req, res, next) => {
-  const {
-    username,
-    email,
-    password,
-
-  } = req.body;
+  const { username, email, password } = req.body;
 
   try {
     const { rows } = await getUser(email, username);
@@ -87,23 +62,48 @@ exports.createNewUser = async (req, res, next) => {
   }
 };
 
-exports.userLogin = (req, res, next) => {
+exports.userLogin = async (req, res, next) => {
   const { email, password } = req.body;
-  const user = usersData.find((_user) => _user.email === email);
+  try {
+    const { rows } = await getUser(email);
+    if (!rows.length > 0) {
+      throw httpErrors('Invalid credentials.', 401);
+    }
 
-  if (!user) {
-    next(httpErrors('User is not exists.', 404));
+    const isMatch = bcrypt.compare(password, rows[0].password);
+
+    if (!isMatch) {
+      throw httpErrors('Invalid credentials.', 401);
+    }
+
+    const options = {
+      expires: new Date(
+        Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
+      ),
+      httpOnly: true,
+    };
+
+    const token = await jwt.sign(
+      { user_id: rows[0].user_id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRE,
+      },
+    );
+
+    return res.status(200).cookie('token', token, options).json({
+      success: true,
+      status: 200,
+      message: 'User login successfully.',
+      token,
+      user: {
+        ...rows[0],
+        password: '',
+      },
+    });
+  } catch (error) {
+    return next(error);
   }
-
-  if (user.password !== password) {
-    next(httpErrors('Passwords do not match.', 400));
-  }
-
-  res.status(200).json({
-    success: true,
-    status: 200,
-    message: 'User login successfully.',
-  });
 };
 
 exports.updateUserById = async (req, res, next) => {
@@ -136,23 +136,8 @@ exports.updateUserById = async (req, res, next) => {
       rowCount: _rowCount,
     });
   } catch (error) {
-    console.log('IN ERROR::');
     return next(error);
   }
-
-  // const user = usersData.find((_user) => _user.id === userId);
-  // const userIndex = usersData.findIndex((_user) => _user.id === userId);
-
-  // const updatedUser = {
-  //   ...user,
-  //   username: username || user.username,
-  //   firstName: firstName || user.firstName,
-  //   lastName: lastName || user.lastName,
-  //   age: age || user.age,
-  //   avatarImage: avatarImage || user.avatarImage,
-  // };
-
-  // usersData.splice(userIndex, 1, updatedUser);
 };
 
 exports.deleteUserById = async (req, res, next) => {

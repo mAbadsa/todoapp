@@ -24,10 +24,10 @@ exports.getUserInfo = (userId) => {
   return connection.query(sql);
 };
 
-exports.getUser = (email, username) => {
+exports.getUser = (email) => {
   const sql = {
-    text: 'SELECT * FROM users WHERE email = $1 OR username = $2;',
-    values: [email, username],
+    text: 'SELECT * FROM users WHERE email = $1;',
+    values: [email],
   };
   return connection.query(sql);
 };
