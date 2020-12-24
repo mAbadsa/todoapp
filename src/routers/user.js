@@ -5,10 +5,12 @@ const {
 const {
   userLogin, getUserById, createNewUser, updateUserById, deleteUserById,
 } = require('../controllers/index');
+const { auth } = require('../middleware/auth');
 
-router.route('/users/:userId').get(getUserById).patch(updateUserValidator, runValidator, updateUserById).delete(deleteUserById);
-
-router.route('/users').post(signupUserValidator, runValidator, createNewUser);
+router.route('/users')
+  .post(signupUserValidator, runValidator, createNewUser)
+  .get(auth, getUserById).patch(updateUserValidator, runValidator, auth, updateUserById)
+  .delete(auth, deleteUserById);
 
 router.route('/users/login').post(signinValidator, runValidator, userLogin);
 

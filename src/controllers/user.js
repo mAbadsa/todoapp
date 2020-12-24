@@ -14,7 +14,8 @@ const {
 // const userId = '5c253f3d-d715-4836-82bf-c073374189dd';
 
 exports.getUserById = async (req, res, next) => {
-  const { userId } = req.params;
+  const userId = req.user.user_id;
+
   try {
     const { rows } = await getUserInfo(userId);
     return res.status(200).json({
@@ -107,10 +108,10 @@ exports.userLogin = async (req, res, next) => {
 };
 
 exports.updateUserById = async (req, res, next) => {
-  const { userId } = req.params;
   const {
     firstName, lastName, age, avatarImage,
   } = req.body;
+  const userId = req.user.user_id;
 
   try {
     const { rowCount, rows } = await getUserInfo(userId);
@@ -141,7 +142,7 @@ exports.updateUserById = async (req, res, next) => {
 };
 
 exports.deleteUserById = async (req, res, next) => {
-  const { userId } = req.params;
+  const userId = req.user.user_id;
 
   try {
     const { rowCount } = await deleteUser(userId);

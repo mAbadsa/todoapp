@@ -5,8 +5,10 @@ const {
   getAllTodosByUserId, getTodoByTodoId, createTodo, updateTodoById, deleteTodoById,
 } = require('../controllers/index');
 
-router.route('/todos').get(getAllTodosByUserId).post(todoValidator, runValidator, auth, createTodo);
+// router.use(auth);
 
-router.route('/todos/:todoId').get(getTodoByTodoId).patch(todoValidator, runValidator, updateTodoById).delete(deleteTodoById);
+router.route('/todos').get(auth, getAllTodosByUserId).post(auth, todoValidator, runValidator, createTodo);
+
+router.route('/todos/:todoId').get(auth, getTodoByTodoId).patch(auth, todoValidator, runValidator, updateTodoById).delete(auth, deleteTodoById);
 
 module.exports = { router };
