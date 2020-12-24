@@ -6,7 +6,7 @@ const morgan = require('morgan');
 
 require('dotenv').config({ path: './config.env' });
 
-const { todoRoutes, userRoutes } = require('./routers/index');
+const { todoRoutes, userRoutes, adminRoutes } = require('./routers/index');
 const { serverErrors } = require('./controllers/error');
 
 const app = express();
@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1', todoRoutes);
 app.use('/api/v1', userRoutes);
+app.use('/api/v1', adminRoutes);
 
 app.use(serverErrors);
 

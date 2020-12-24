@@ -3,8 +3,10 @@ const {
 } = require('./todo');
 
 const {
-  getUserById, createNewUser, userLogin, updateUserById, deleteUserById, getAllUsers,
+  getUserById, createNewUser, userLogin, updateUserById, deleteUserById,
 } = require('./user');
+
+const { getAllUsers } = require('./admin');
 
 module.exports = {
   getAllTodosByUserId,
