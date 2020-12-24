@@ -6,11 +6,11 @@ const { getUserInfo } = require('../database/queries/index');
 
 exports.auth = async (req, res, next) => {
   const { token } = req.cookies;
-  if (!token) {
-    throw httpErrors('Not authorized to access this route.', 401);
-  }
 
   try {
+    if (!token) {
+      throw httpErrors('Not authorized to access this route.', 401);
+    }
     const decoded = await JWT.verify(token, process.env.JWT_SECRET);
 
     const user = await getUserInfo(decoded.user_id);

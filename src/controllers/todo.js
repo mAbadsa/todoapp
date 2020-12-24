@@ -7,9 +7,9 @@ const {
 } = require('../database/queries/index');
 const { httpErrors } = require('../utils/httpErrors');
 
-const userId = '5c253f3d-d715-4836-82bf-c073374189dd';
-
 exports.getAllTodosByUserId = async (req, res, next) => {
+  const userId = req.user.user_id;
+
   try {
     const { rows } = await getTodos(userId);
     return res.status(200).json({
@@ -25,6 +25,7 @@ exports.getAllTodosByUserId = async (req, res, next) => {
 
 exports.getTodoByTodoId = async (req, res, next) => {
   const { todoId } = req.params;
+  const userId = req.user.user_id;
   try {
     const { rows } = await getTodo(userId, todoId);
     return res.status(200).json({
@@ -40,9 +41,10 @@ exports.getTodoByTodoId = async (req, res, next) => {
 
 exports.createTodo = async (req, res, next) => {
   const { todoContent, importanceLevel, taskType } = req.body;
+  const userId = req.user.user_id;
   try {
     const { rowCount, rows } = await addTodo({
-      userId: req.user.user_id,
+      userId,
       todoContent,
       importanceLevel,
       taskType,
@@ -62,6 +64,7 @@ exports.createTodo = async (req, res, next) => {
 exports.updateTodoById = async (req, res, next) => {
   const { todoContent, importanceLevel, taskType } = req.body;
   const { todoId } = req.params;
+  const userId = req.user.user_id;
   try {
     const { rowCount, rows } = await getTodo(userId, todoId);
     if (rowCount === 0) {
@@ -90,6 +93,7 @@ exports.updateTodoById = async (req, res, next) => {
 
 exports.deleteTodoById = async (req, res, next) => {
   const { todoId } = req.params;
+  const userId = req.user.user_id;
   try {
     const { rowCount } = await deleteTodo(userId, todoId);
 

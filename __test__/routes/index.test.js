@@ -5,8 +5,8 @@ const app = require('../../src/app');
 const { runBuild } = require('../../src/database/config/build.js');
 const connection = require('../../src/database/config/connection');
 
-beforeAll(() => runBuild());
 let token;
+beforeAll(() => runBuild());
 beforeAll(async (done) => {
   try {
     const res = await request(app)
@@ -19,7 +19,7 @@ beforeAll(async (done) => {
     token = res.body.token; // save the token!
     return done();
   } catch (error) {
-    return done(err);
+    return done(error);
   }
 });
 
@@ -29,11 +29,12 @@ describe('Todo routes test', () => {
       const res = await request(app)
         .get('/api/v1/todos')
         .expect(200)
-        .expect('Content-Type', /json/);
+        .expect('Content-Type', /json/)
+        .set('Cookie', [`token=${token}`]);
       expect(res.body.todos.length).toBe(2);
       return done();
     } catch (error) {
-      return done(err);
+      return done(error);
     }
   });
 
@@ -42,14 +43,15 @@ describe('Todo routes test', () => {
       const res = await request(app)
         .get('/api/v1/todos/5301ea70-1d57-4b70-8c46-4b9657551978')
         .expect(200)
-        .expect('Content-Type', /json/);
+        .expect('Content-Type', /json/)
+        .set('Cookie', [`token=${token}`]);
       expect(res.body.todo.length).toBe(1);
       expect(res.body.todo[0].todo_id).toBe(
         '5301ea70-1d57-4b70-8c46-4b9657551978',
       );
       return done();
     } catch (error) {
-      return done(err);
+      return done(error);
     }
   });
 
@@ -83,7 +85,8 @@ describe('Todo routes test', () => {
           todoContent: 'new task--updated',
           importanceLevel: 2,
           taskType: 'house',
-        });
+        })
+        .set('Cookie', [`token=${token}`]);
       expect(res.body.todos.todo_content).toBe('new task--updated');
       return done();
     } catch (error) {
@@ -96,7 +99,8 @@ describe('Todo routes test', () => {
       const res = await request(app)
         .delete('/api/v1/todos/5301ea70-1d57-4b70-8c46-4b9657551978')
         .expect(200)
-        .expect('Content-Type', /json/);
+        .expect('Content-Type', /json/)
+        .set('Cookie', [`token=${token}`]);
       expect(res.body.rowCount).toBe(1);
       return done();
     } catch (error) {
@@ -105,21 +109,9 @@ describe('Todo routes test', () => {
   });
 });
 
+// User routes tests
 describe('User routes test', () => {
-  test('Get user data Should be return username = muh123', async (done) => {
-    try {
-      const res = await request(app)
-        .get('/api/v1/users/5c253f3d-d715-4836-82bf-c073374189dd')
-        .expect(200)
-        .expect('Content-Type', /json/);
-      expect(res.body.user.username).toBe('muh123');
-      return done();
-    } catch (error) {
-      return done(error);
-    }
-  });
-
-  test('Should be return username = ibrahim05', async (done) => {
+  test('Create new user should be return username = ibrahim05', async (done) => {
     try {
       const res = await request(app)
         .post('/api/v1/users')
@@ -136,17 +128,32 @@ describe('User routes test', () => {
       expect(res.body.user.username).toBe('ibrahim05');
       return done();
     } catch (error) {
-      return done(err);
+      return done(error);
     }
   });
 
-  test('Should be return 30', async (done) => {
+  test('Get user data Should be return username = muh123', async (done) => {
     try {
       const res = await request(app)
-        .patch('/api/v1/users/5c253f3d-d715-4836-82bf-c073374189dd')
+        .get('/api/v1/users')
         .expect(200)
         .expect('Content-Type', /json/)
-        .send({ age: '30' });
+        .set('Cookie', [`token=${token}`]);
+      expect(res.body.user.username).toBe('muh123');
+      return done();
+    } catch (error) {
+      return done(error);
+    }
+  });
+
+  test('Update user should be return 30', async (done) => {
+    try {
+      const res = await request(app)
+        .patch('/api/v1/users')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .send({ age: '30' })
+        .set('Cookie', [`token=${token}`]);
       expect(res.body.user.age).toBe(30);
       return done();
     } catch (error) {
@@ -154,13 +161,13 @@ describe('User routes test', () => {
     }
   });
 
-  test('Should be return rowCount = 1', async (done) => {
+  test('Delete user should be return rowCount = 1', async (done) => {
     try {
       const res = await request(app)
-        .delete('/api/v1/users/b3ea641e-1281-435c-8af7-059386395338')
+        .delete('/api/v1/users')
         .expect(200)
-        .expect('Content-Type', /json/);
-
+        .expect('Content-Type', /json/)
+        .set('Cookie', [`token=${token}`]);
       expect(res.body.rowCount).toBe(1);
       return done();
     } catch (error) {
