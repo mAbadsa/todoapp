@@ -4,7 +4,7 @@ const {
 const {
   addTodo, addUser,
 } = require('./addData');
-const { updateTodo, updateUser } = require('./updateData');
+const { updateTodo, updateUser, updateUserState } = require('./updateData');
 const { deleteTodo, deleteUser } = require('./deleteData');
 
 module.exports = {
@@ -17,6 +17,7 @@ module.exports = {
   addUser,
   updateTodo,
   updateUser,
+  updateUserState,
   deleteTodo,
   deleteUser,
 };
