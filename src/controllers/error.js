@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 exports.serverErrors = (err, req, res, next) => {
   // eslint-disable-next-line no-console
   console.log('httpError::--', err);

@@ -12,6 +12,8 @@ CREATE TABLE users (
     age SMALLINT,
     password TEXT NOT NULL,
     avatar_image TEXT DEFAULT 'https://via.placeholder.com/150',
+    role VARCHAR(30) DEFAULT 'user',
+    user_state VARCHAR(30) DEFAULT 'active',
     created_on TIMESTAMP NOT NULL,
     last_update TIMESTAMP NOT NULL
 );

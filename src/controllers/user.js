@@ -7,6 +7,7 @@ const {
   getUserInfo,
   updateUser,
   getUser,
+  getAllUser,
   addUser,
   deleteUser,
 } = require('../database/queries/index');
@@ -15,7 +16,7 @@ const {
 
 exports.getUserById = async (req, res, next) => {
   const userId = req.user.user_id;
-
+  console.log(userId);
   try {
     const { rows } = await getUserInfo(userId);
     return res.status(200).json({
@@ -156,6 +157,19 @@ exports.deleteUserById = async (req, res, next) => {
       status: 200,
       message: 'User has been successfully deleted.',
       rowCount,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+exports.getAllUsers = async (req, res, next) => {
+  try {
+    const { rows } = await getAllUser();
+    return res.status(200).json({
+      success: true,
+      message: 'Get all users successfully.',
+      users: rows,
     });
   } catch (error) {
     return next(error);
