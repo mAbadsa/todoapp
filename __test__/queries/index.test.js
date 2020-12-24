@@ -16,7 +16,7 @@ const {
 
 beforeAll(() => runBuild());
 
-describe('Database GetData test', () => {
+describe('Database Get Data test', () => {
   test('Get All Todo: Should be return todos.length = 2', async () => {
     const { rows } = await getTodos('5c253f3d-d715-4836-82bf-c073374189dd');
     expect(rows.length).toBe(2);
@@ -30,25 +30,25 @@ describe('Database GetData test', () => {
     expect(rows.length).toBe(1);
   });
 
-  test('Get user: Should be return "muh123"', async () => {
-    const res = await getUserInfo('5c253f3d-d715-4836-82bf-c073374189dd');
-    expect(res.rows[0].username).toBe('muh123');
+  test('Get user: Should be return "ahmed"', async () => {
+    const res = await getUserInfo('b3ea641e-1281-435c-8af7-059386395338');
+    expect(res.rows[0].username).toBe('ahmed');
   });
 
-  test('Get user: Should be return "muh123"', async () => {
+  test('Get user: Should be return 5', async () => {
     const res = await getAllUser();
-    expect(res.rows.length).toBe(2);
+    expect(res.rows.length).toBe(5);
   });
 });
 
 describe('Database Create Data test', () => {
   test('Create New User Test', async () => {
     const { rowCount } = await addUser({
-      username: 'Ali',
-      email: 'ali@test.com',
+      username: 'awad02',
+      email: 'awad@test.com',
       password: '12345678',
-      firstName: 'ali',
-      lastName: 'Alioua',
+      firstName: 'Awad',
+      lastName: 'Alawady',
       age: 20,
     });
     expect(rowCount).toBe(1);

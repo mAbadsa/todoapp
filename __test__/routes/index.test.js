@@ -111,21 +111,21 @@ describe('Todo routes test', () => {
 
 // User routes tests
 describe('User routes test', () => {
-  test('Create new user should be return username = ibrahim05', async (done) => {
+  test('Create new user should be return username = khaled01', async (done) => {
     try {
       const res = await request(app)
         .post('/api/v1/users')
         .expect(201)
         .expect('Content-Type', /json/)
         .send({
-          username: 'ibrahim05',
-          email: 'ibrahim@test.com',
-          firstName: 'Ibrahim',
-          lastName: 'AlIbrahim',
+          username: 'khaled01',
+          email: 'khaled@test.com',
+          firstName: 'Khaled',
+          lastName: 'Alkhaled',
           password: '12345678asd',
           confirmPassword: '12345678asd',
         });
-      expect(res.body.user.username).toBe('ibrahim05');
+      expect(res.body.user.username).toBe('khaled01');
       return done();
     } catch (error) {
       return done(error);
