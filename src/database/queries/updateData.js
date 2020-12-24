@@ -27,3 +27,14 @@ exports.updateUser = ({
   };
   return connection.query(sql);
 };
+
+exports.updateUserState = ({
+  userId,
+  userState,
+}) => {
+  const sql = {
+    text: 'UPDATE users SET user_state = $1 WHERE user_id = $2 RETURNING *;',
+    values: [userState, userId],
+  };
+  return connection.query(sql);
+};

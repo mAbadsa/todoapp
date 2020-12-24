@@ -6,7 +6,7 @@ const {
   getUserById, createNewUser, userLogin, updateUserById, deleteUserById,
 } = require('./user');
 
-const { getAllUsers } = require('./admin');
+const { getAllUsers, changeUserState } = require('./admin');
 
 module.exports = {
   getAllTodosByUserId,
@@ -20,4 +20,5 @@ module.exports = {
   updateUserById,
   deleteUserById,
   getAllUsers,
+  changeUserState,
 };
