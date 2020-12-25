@@ -36,6 +36,12 @@ app.use('/api/v1', todoRoutes);
 app.use('/api/v1', userRoutes);
 app.use('/api/v1', adminRoutes);
 
+app.use((req, res) => res.status(404).json({
+  success: false,
+  statusCode: 404,
+  message: 'Page not found!',
+}));
+
 app.use(serverErrors);
 
 module.exports = app;
