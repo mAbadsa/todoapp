@@ -5,16 +5,29 @@ require('dotenv').config({ path: './config.env' });
 const { httpErrors } = require('../utils/httpErrors');
 const { getUserInfo } = require('../database/queries/index');
 
+const verfing = (token) => new Promise((res, rej) => {
+  JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      rej(err);
+    } else {
+      res(decoded);
+    }
+  });
+});
+
 exports.auth = async (req, res, next) => {
   const { token } = req.cookies;
 
   try {
-    if (!token) {
-      throw httpErrors('Not authorized to access this route.', 401);
+    let decoded;
+    try {
+      decoded = await verfing(token);
+    } catch (error) {
+      throw httpErrors('Invalid credentials.', 401);
     }
-    const decoded = await JWT.verify(token, process.env.JWT_SECRET);
 
     const user = await getUserInfo(decoded.user_id);
+
     if (user.rows.length === 0) {
       throw httpErrors('Invalid credentials.', 401);
     }
