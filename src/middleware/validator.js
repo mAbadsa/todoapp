@@ -12,14 +12,15 @@ exports.todoValidator = [
 ];
 
 exports.signupUserValidator = [
-  check('username').not().isEmpty().trim()
+  check('username')
+    .not()
+    .isEmpty()
+    .trim()
     .isLength({ min: 2 })
     .withMessage('Userame is required.'),
   check('email').isEmail().trim().withMessage('Must be a vaild email address.'),
-  check('password', 'Password must be at least 8 character long.')
-    .isLength({ min: 8 })
-    .isAlphanumeric()
-    .withMessage('Password must be at least 8 character long.'),
+  check('password', 'Password must include one lowercase character, one uppercase character, a number, and a special character.')
+    .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, 'i'),
   check(
     'confirmPassword',
     'PasswordConfirmation field must have the same value as the password field',

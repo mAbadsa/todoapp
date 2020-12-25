@@ -32,7 +32,7 @@ exports.getTodoByTodoId = async (req, res, next) => {
       success: true,
       status: 200,
       message: 'get Todo successfully.',
-      todo: rows,
+      todo: rows[0],
     });
   } catch (error) {
     return next(error);
@@ -83,7 +83,7 @@ exports.updateTodoById = async (req, res, next) => {
       success: true,
       status: 200,
       message: 'get Todo successfully.',
-      todos: _rows[0],
+      todo: _rows[0],
       rowCount: _rowCount,
     });
   } catch (error) {

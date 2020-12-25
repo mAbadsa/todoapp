@@ -2,15 +2,17 @@ const {
   getAllUser,
   updateUserState,
 } = require('../database/queries/index');
+const { httpErrors } = require('../utils/httpErrors');
 
 exports.getAllUsers = async (req, res, next) => {
   try {
     const { rows } = await getAllUser();
+    const users = rows.filter((user) => user.role !== 'admin');
     return res.status(200).json({
       success: true,
       status: 200,
       message: 'Get all users successfully.',
-      users: rows,
+      users,
     });
   } catch (error) {
     return next(error);
@@ -24,6 +26,10 @@ exports.changeUserState = async (req, res, next) => {
     const { rows } = await getAllUser();
 
     const user = rows.find((_user) => _user.user_id === userId);
+
+    if (!user) {
+      throw httpErrors('User not found!', 404);
+    }
 
     const userUpdated = await updateUserState({
       userId: user.user_id,
