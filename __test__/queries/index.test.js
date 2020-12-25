@@ -18,13 +18,13 @@ const {
 beforeAll(() => runBuild());
 
 describe('Database Get Data test', () => {
-  test('Get All Todo: Should be return todos.length = 2', async () => {
-    const { rows } = await getTodos('5c253f3d-d715-4836-82bf-c073374189dd');
+  test('Get All Todo for specific user: Should be return todos.length = 2', async () => {
+    const { rows } = await getTodos('5c253f3d-d715-4836-82bf-c073374189dd', 5, 0);
     expect(rows).toHaveLength(2);
     expect(rows[0].todo_content).toBe('make coffee');
   });
 
-  test('Get Specific Todo: Should be return One todo', async () => {
+  test('Get Specific Todo: Should be return One todo.', async () => {
     const { rows } = await getTodo(
       '5c253f3d-d715-4836-82bf-c073374189dd',
       '9c271a2d-beab-41d1-a5ea-b3ea06912742',
@@ -33,7 +33,7 @@ describe('Database Get Data test', () => {
     expect(rows[0].todo_content).toBe('make coffee');
   });
 
-  test('Get user: Should be return "ahmed"', async () => {
+  test('Get user: Should be return "ahmed".', async () => {
     const { rowCount, rows } = await getUserInfo(
       'b3ea641e-1281-435c-8af7-059386395338',
     );
@@ -41,11 +41,18 @@ describe('Database Get Data test', () => {
     expect(rows[0].username).toBe('ahmed');
   });
 
-  test('Get user: Should be return 5', async () => {
-    const { rows, rowCount } = await getAllUser();
+  test('Get all users: Should be return 5.', async () => {
+    const { rows, rowCount } = await getAllUser(20, 0);
     expect(rows[0].username).toBe('muh123');
     expect(rows).toHaveLength(5);
     expect(rowCount).toBe(5);
+  });
+
+  test('Get all users with limit = 2 and offset = 2: Should be return 5.', async () => {
+    const { rows, rowCount } = await getAllUser(2, 2);
+    expect(rows[0].username).toBe('ali22');
+    expect(rows).toHaveLength(2);
+    expect(rowCount).toBe(2);
   });
 });
 

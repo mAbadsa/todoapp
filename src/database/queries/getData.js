@@ -1,9 +1,9 @@
 const connection = require('../config/connection');
 
-exports.getTodos = (userId) => {
+exports.getTodos = (userId, limit = 10, skip = 0) => {
   const sql = {
-    text: 'SELECT * FROM todos WHERE user_id = $1',
-    values: [userId],
+    text: 'SELECT * FROM todos WHERE user_id = $1 LIMIT $2 OFFSET $3;',
+    values: [userId, limit, skip],
   };
   return connection.query(sql);
 };
@@ -32,4 +32,10 @@ exports.getUser = (email) => {
   return connection.query(sql);
 };
 
-exports.getAllUser = () => connection.query('SELECT * FROM users');
+exports.getAllUser = (limit = 20, skip = 0) => {
+  const sql = {
+    text: 'SELECT * FROM users LIMIT $1 OFFSET $2;',
+    values: [limit, skip],
+  };
+  return connection.query(sql);
+};
