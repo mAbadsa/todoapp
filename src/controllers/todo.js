@@ -9,7 +9,7 @@ const { httpErrors } = require('../utils/httpErrors');
 
 exports.getAllTodosByUserId = async (req, res, next) => {
   const userId = req.user.user_id;
-  let { limit, skip } = +req.query;
+  let { limit, skip } = req.query;
   if (!limit) {
     limit = 10;
   }

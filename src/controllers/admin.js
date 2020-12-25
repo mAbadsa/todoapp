@@ -5,7 +5,7 @@ const {
 const { httpErrors } = require('../utils/httpErrors');
 
 exports.getAllUsers = async (req, res, next) => {
-  let { limit, skip } = +req.query;
+  let { limit, skip } = req.query;
   if (!limit) {
     limit = 20;
   }

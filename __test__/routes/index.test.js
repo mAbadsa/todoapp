@@ -26,7 +26,7 @@ describe('Todo routes test', () => {
   test('Get all todos for specific user should be return 2', async (done) => {
     try {
       const res = await request(app)
-        .get('/api/v1/todos')
+        .get('/api/v1/todos?limit=10&skip=0')
         .expect(200)
         .expect('Content-Type', /json/)
         .set('Cookie', [`token=${token}`]);
@@ -37,10 +37,24 @@ describe('Todo routes test', () => {
     }
   });
 
+  test('Get all todos for specific user with limit = 1 should be return 1', async (done) => {
+    try {
+      const res = await request(app)
+        .get('/api/v1/todos?limit=1&skip=0')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .set('Cookie', [`token=${token}`]);
+      expect(res.body.todos).toHaveLength(1);
+      return done();
+    } catch (error) {
+      return done(error);
+    }
+  });
+
   test('Get all the todos for a specific user who is not logged in', async (done) => {
     try {
       const res = await request(app)
-        .get('/api/v1/todos')
+        .get('/api/v1/todos?limit=10&skip=0')
         .expect(401)
         .expect('Content-Type', /json/)
         .set('Cookie', []);
@@ -83,7 +97,7 @@ describe('Todo routes test', () => {
       expect(res.body.todo.todo_content).toEqual('new task');
       expect(res.body.rowCount).toBe(1);
       const todos = await request(app)
-        .get('/api/v1/todos')
+        .get('/api/v1/todos?limit=10&skip=0')
         .expect(200)
         .expect('Content-Type', /json/)
         .send({
@@ -147,7 +161,7 @@ describe('Todo routes test', () => {
         .set('Cookie', [`token=${token}`]);
       expect(res.body.rowCount).toBe(1);
       const todos = await request(app)
-        .get('/api/v1/todos')
+        .get('/api/v1/todos?limit=10&skip=0')
         .expect(200)
         .expect('Content-Type', /json/)
         .set('Cookie', [`token=${token}`]);
@@ -289,7 +303,7 @@ describe('User routes test', () => {
   test('Test get all user by admin authorized.', async (done) => {
     try {
       const res = await request(app)
-        .get('/api/v1/admin/users')
+        .get('/api/v1/admin/users?limit=20&skip=0')
         .expect(200)
         .set('Cookie', [`token=${token}`]);
       expect(res.body.users).toHaveLength(4);
@@ -328,7 +342,7 @@ describe('User routes test', () => {
       expect(res.body.message).toBe('User login successfully.');
       expect(res.body.token).toContain('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.');
       const userData = await request(app)
-        .get('/api/v1/users')
+        .get('/api/v1/users?limit=20&skip=0')
         .expect(403)
         .expect('Content-Type', /json/)
         .set('Cookie', [`token=${token}`]);
