@@ -352,6 +352,18 @@ describe('User routes test', () => {
       return done(error);
     }
   });
+
+  test('Test page not found', async (done) => {
+    try {
+      const res = await request(app)
+        .get('/api/v1/dashboard')
+        .expect(404);
+      expect(res.body.message).toBe('Page not found!');
+      return done();
+    } catch (error) {
+      return done(error);
+    }
+  });
 });
 
 afterAll(() => connection.end());
