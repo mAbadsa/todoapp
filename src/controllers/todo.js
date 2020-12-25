@@ -9,9 +9,16 @@ const { httpErrors } = require('../utils/httpErrors');
 
 exports.getAllTodosByUserId = async (req, res, next) => {
   const userId = req.user.user_id;
+  let { limit, skip } = +req.query;
+  if (!limit) {
+    limit = 10;
+  }
+  if (!skip) {
+    skip = 0;
+  }
 
   try {
-    const { rows } = await getTodos(userId);
+    const { rows } = await getTodos(userId, limit, skip);
     return res.status(200).json({
       success: true,
       status: 200,

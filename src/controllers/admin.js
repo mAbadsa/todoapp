@@ -5,8 +5,15 @@ const {
 const { httpErrors } = require('../utils/httpErrors');
 
 exports.getAllUsers = async (req, res, next) => {
+  let { limit, skip } = +req.query;
+  if (!limit) {
+    limit = 20;
+  }
+  if (!skip) {
+    skip = 0;
+  }
   try {
-    const { rows } = await getAllUser();
+    const { rows } = await getAllUser(limit, skip);
     const users = rows.filter((user) => user.role !== 'admin');
     return res.status(200).json({
       success: true,
