@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const request = require('supertest');
 
 const app = require('../../src/app');
@@ -9,77 +8,53 @@ let token;
 beforeAll(() => runBuild());
 
 describe('Todo routes test', () => {
-  test('Test user login.', async (done) => {
-    try {
-      const res = await request(app).post('/api/v1/users/login').send({
-        email: 'muhammad@test.com',
-        password: '123456asd',
-      });
-      // eslint-disable-next-line no-unused-vars
-      token = res.body.token; // save the token!
-      return done();
-    } catch (error) {
-      return done(error);
-    }
+  test('Test user login.', async () => {
+    const res = await request(app).post('/api/v1/users/login').send({
+      email: 'muhammad@test.com',
+      password: '123456asd',
+    });
+    token = res.body.token;
   });
 
-  test('Get all todos for specific user should be return 2', async (done) => {
-    try {
-      const res = await request(app)
-        .get('/api/v1/todos?limit=10&skip=0')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .set('Cookie', [`token=${token}`]);
-      expect(res.body.todos).toHaveLength(2);
-      return done();
-    } catch (error) {
-      return done(error);
-    }
+  test('Get all todos for specific user should be return 2', async () => {
+    expect.assertions(1);
+    const res = await request(app)
+      .get('/api/v1/todos?limit=10&skip=0')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .set('Cookie', [`token=${token}`]);
+    expect(res.body.todos).toHaveLength(2);
   });
 
-  test('Get all todos for specific user with limit = 1 should be return 1', async (done) => {
-    try {
-      const res = await request(app)
-        .get('/api/v1/todos?limit=1&skip=0')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .set('Cookie', [`token=${token}`]);
-      expect(res.body.todos).toHaveLength(1);
-      return done();
-    } catch (error) {
-      return done(error);
-    }
+  test('Get all todos for specific user with limit = 1 should be return 1', async () => {
+    expect.assertions(1);
+    const res = await request(app)
+      .get('/api/v1/todos?limit=1&skip=0')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .set('Cookie', [`token=${token}`]);
+    expect(res.body.todos).toHaveLength(1);
   });
 
-  test('Get all the todos for a specific user who is not logged in', async (done) => {
-    try {
-      const res = await request(app)
-        .get('/api/v1/todos?limit=10&skip=0')
-        .expect(401)
-        .expect('Content-Type', /json/)
-        .set('Cookie', []);
-      expect(res.body.message).toBe('Invalid credentials.');
-      return done();
-    } catch (error) {
-      return done(error);
-    }
+  test('Get all the todos for a specific user who is not logged in', async () => {
+    expect.assertions(1);
+    const res = await request(app)
+      .get('/api/v1/todos?limit=10&skip=0')
+      .expect(401)
+      .expect('Content-Type', /json/)
+      .set('Cookie', []);
+    expect(res.body.message).toBe('Invalid credentials.');
   });
 
-  test('Get specific todo should be return 1 todo', async (done) => {
-    try {
-      const res = await request(app)
-        .get('/api/v1/todos/5301ea70-1d57-4b70-8c46-4b9657551978')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .set('Cookie', [`token=${token}`]);
-      expect(res.body.todo.todo_id).toBe(
-        '5301ea70-1d57-4b70-8c46-4b9657551978',
-      );
-      expect(res.body.todo.todo_content).toBe('Make anything');
-      return done();
-    } catch (error) {
-      return done(error);
-    }
+  test('Get specific todo should be return 1 todo', async () => {
+    expect.assertions(1);
+    const res = await request(app)
+      .get('/api/v1/todos/5301ea70-1d57-4b70-8c46-4b9657551978')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .set('Cookie', [`token=${token}`]);
+    expect(res.body.todo.todo_id).toBe('5301ea70-1d57-4b70-8c46-4b9657551978');
+    expect(res.body.todo.todo_content).toBe('Make anything');
   });
 
   test('Create new todo should be return new task', async (done) => {
@@ -346,7 +321,9 @@ describe('User routes test', () => {
         .expect(403)
         .expect('Content-Type', /json/)
         .set('Cookie', [`token=${token}`]);
-      expect(userData.body.message).toBe('User is suspended is not authorized to access this route, Contact support');
+      expect(userData.body.message).toBe(
+        'User is suspended is not authorized to access this route, Contact support',
+      );
       return done();
     } catch (error) {
       return done(error);
@@ -355,9 +332,7 @@ describe('User routes test', () => {
 
   test('Test page not found', async (done) => {
     try {
-      const res = await request(app)
-        .get('/api/v1/dashboard')
-        .expect(404);
+      const res = await request(app).get('/api/v1/dashboard').expect(404);
       expect(res.body.message).toBe('Page not found!');
       return done();
     } catch (error) {

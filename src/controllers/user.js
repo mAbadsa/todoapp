@@ -68,7 +68,7 @@ exports.userLogin = async (req, res, next) => {
       return next(httpErrors('User not found.', 404));
     }
 
-    const isMatch = bcrypt.compare(password, rows[0].password);
+    const isMatch = await bcrypt.compare(password, rows[0].password);
 
     if (!isMatch) {
       throw httpErrors('Invalid credentials.', 401);
